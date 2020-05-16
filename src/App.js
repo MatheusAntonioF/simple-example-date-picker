@@ -1,24 +1,58 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState, useEffect } from 'react';
+
+import { AiOutlineCaretLeft, AiOutlineCaretRight } from 'react-icons/ai';
+
+import { format, addMonths, subMonths } from 'date-fns';
+
+import { ptBR } from 'date-fns/locale';
+
+import data from './data';
+
 import './App.css';
 
 function App() {
+  const [date, setDate] = useState(new Date());
+
+  const [content, setContent] = useState([]);
+
+  useEffect(() => {
+    
+    // Essa função será executada todas ás vezes que a data do input for alterada
+    async function fetchData() {
+      return setContent(data.filter(data =>        
+        data.date.getMonth() === date.getMonth()
+      ));
+    }
+
+    fetchData();
+  }, [date]);
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div className="handler">
+        <button onClick={() => setDate(date => subMonths(new Date(date), 1))}>
+          <AiOutlineCaretLeft size={34} />
+        </button>
+
+        <input value={format(date, 'MMMM', {
+          locale: ptBR
+        })} onChange={() => {}} />
+
+        <button onClick={() => setDate(date => addMonths(new Date(date), 1))}>
+          <AiOutlineCaretRight size={34} />
+        </button>
+      </div>
+
+      <div className="content">
+      {content.map(currentValue => 
+        <span  key={Math.random()} className="content">
+          {`
+            ${format(currentValue.date, 'MMMM', {
+              locale: ptBR,
+            })}
+          `}
+        </span>)}
+      </div>
     </div>
   );
 }
