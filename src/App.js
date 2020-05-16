@@ -16,7 +16,7 @@ function App() {
   const [content, setContent] = useState([]);
 
   useEffect(() => {
-    
+
     // Essa função será executada todas ás vezes que a data do input for alterada
     async function fetchData() {
       return setContent(data.filter(data =>        
@@ -50,6 +50,8 @@ function App() {
             ${format(currentValue.date, 'MMMM', {
               locale: ptBR,
             })}
+            |
+            ${currentValue.label}
           `}
         </span>)}
       </div>
